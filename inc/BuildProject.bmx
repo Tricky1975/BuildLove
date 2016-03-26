@@ -195,7 +195,9 @@ Function ConvertLua(prj:TJCRDir,file$)
 					For platform=EachIn wplatforms
 						outk=out(platform)
 						outk.allow=True
-						WriteLine outk.bt,line
+						If outk.process
+							If Not outk.bt ListAddLast warnings,"Could not write to file! Why?" Else WriteLine outk.bt,line
+							EndIf
 						c=0
 						For Local d$=EachIn spline
 							If c>1 
