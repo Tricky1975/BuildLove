@@ -77,9 +77,9 @@ Just ends the -- *if statement set up before.
 Then the pre-processor will replace the next tags with the applicable data. This works as well INSIDE as OUTSIDE strings, however in most cases I do recommend to use them INSIDE a string, unless you know what you are doing.
 (The tags below are all CASE SENSITIVE).
 
-Tag | Data
-====|=====
-$$mydir$$ | will turn into the directory in which the lua file itself lives. This is most of all done to make your life easier when creating libraries.
+| Tag | Data |
+|====|=====|
+| $$mydir$$ | will turn into the directory in which the lua file itself lives. This is most of all done to make your life easier when creating libraries. |
 
 
 And that should be it. Enjoy!
