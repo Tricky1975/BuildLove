@@ -5,7 +5,7 @@ MKL_Lic     "",""
 Function MacRelease(o$)
 	Local mac:TJCRDir = JCR_Dir("incbin::Mac64.jcr")
 	Local e:TJCREntry
-	Local target$
+	Local target$,infomac$,copyright$=""
 	AddRaw mac,tempdir+"/zips/project.OSX.love","love.app/Contents/Resources/"+pini.c("Executable")+".love"
 	For e=EachIn MapValues(mac.entries)
 		target = pini.c("Release."+platform)+"/"+o+"/"+Replace(e.filename,"love.app/",pini.c("Executable")+".app/")
@@ -13,6 +13,18 @@ Function MacRelease(o$)
 		check CreateDir(ExtractDir(target),2),"Could not create: "+ExtractDir(target)
 		If ExtractExt(target).tolower()="icns"
 			If Not CopyFile(pini.c("MacIcon."+platform),target) warn "Could not copy "+pini.c("MacIcon."+platform)+" to "+target
+		ElseIf e.filename.tolower()="love.app/contents/info.plist"
+			copyright=""
+			For Local yr$=EachIn pini.list("years")
+				If copyright copyright:+", "
+				copyright:+yr
+			Next
+			copyright:+"  "+pini.c("you")
+			infomac = LoadString(JCR_B(mac,e.filename))
+			infomac = Replace(infomac,"{title}",pini.c("Title"))
+			infomac = Replace(infomac,"{build}",Right(Year(),2)+"."+Right("0"+Month(),2)+"."+Right("0"+Day(),2))
+			infomac = Replace(infomac,"{copyright}",copyright)			
+			SaveString infomac,target
 		Else
 			JCR_Extract mac,e.filename,target,True
 		EndIf			
