@@ -1,7 +1,7 @@
 --[[
   lovemain.lua
   -- Launching script --
-  version: 16.03.26
+  version: 16.03.27
   Copyright (C) 2016 Jeroen P. Broks
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -34,6 +34,7 @@
 
 
 builddate = "-- builddate --"
+gametitle = "-- title --"
 
 love.window.setTitle("-- title --")
 
