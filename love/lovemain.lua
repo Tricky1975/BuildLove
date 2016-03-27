@@ -39,8 +39,9 @@ gametitle = "-- title --"
 love.window.setTitle("-- title --")
 
 -- Importer
-function j_love_import(afile)
+function j_love_import(afile,keepcase)
   local file = upper(afile)
+  if keepcase then file=afile end
   if left(file,1)=="/" then file=right(file,len(file)-1) end
   --[[ simple version
 	local mychunk = love.filesystem.load(file)
@@ -310,7 +311,7 @@ if vname then
    if type(vname)~='string' then print("First variable must be the name to return in the serializer string") end
    end
 ret = TRUE_SERIALIZE(vname,v)
-JBCSYSTEM.Returner(ret)
+-- JBCSYSTEM.Returner(ret)
 return ret
 end
 
