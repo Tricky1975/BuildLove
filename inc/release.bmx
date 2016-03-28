@@ -20,9 +20,9 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 16.03.28
 End Rem
-MKL_Version "Love Builder - release.bmx","16.03.26"
+MKL_Version "Love Builder - release.bmx","16.03.28"
 MKL_Lic     "Love Builder - release.bmx","GNU General Public License 3"
 
 
@@ -31,9 +31,22 @@ Function MacRelease(o$)
 	Local e:TJCREntry
 	Local target$,infomac$,copyright$=""
 	AddRaw mac,tempdir+"/zips/project.OSX.love","love.app/Contents/Resources/"+pini.c("Executable")+".love"
+	WriteStdout "Building application: "+pini.c("Release."+platform)+"/"+o+"/"+pini.c("Executable")+".app  ... "
+	?debug
+	Print "Debug data below
+	?Not debug
+	Local nument,cntent,prcent
+	For e=EachIn MapValues(mac.entries) nument:+1 Next
+	?
 	For e=EachIn MapValues(mac.entries)
 		target = pini.c("Release."+platform)+"/"+o+"/"+Replace(e.filename,"love.app/",pini.c("Executable")+".app/")
+		?debug
 		Print "= Writing: "+target
+		?Not debug
+		cntent:+1
+		prcent = Int((Double(cntent)/Double(nument))*100)
+		WriteStdout Right("   "+prcent,4)+"%"+Chr(8)+Chr(8)+Chr(8)+Chr(8)+Chr(8)
+		?
 		check CreateDir(ExtractDir(target),2),"Could not create: "+ExtractDir(target)
 		If ExtractExt(target).tolower()="icns"
 			If Not CopyFile(pini.c("MacIcon."+platform),target) warn "Could not copy "+pini.c("MacIcon."+platform)+" to "+target
@@ -53,6 +66,9 @@ Function MacRelease(o$)
 			JCR_Extract mac,e.filename,target,True
 		EndIf			
 	Next
+	?Not debug
+	Print "done   "
+	?
 End Function; out("OSX").releasegame = MacRelease
 
 
@@ -83,7 +99,12 @@ Function WinRelease(o$)
 		Print "done    "
 		CloseStream bo
 		For e=EachIn MapValues(exej[i].entries)
-			If ExtractExt(e.filename).tolower()="dll" JCR_Extract exej[i],e.filename,exed[i] Print "= Written: "+exed[i]+"/"+e.filename
+			If ExtractExt(e.filename).tolower()="dll" 
+			   JCR_Extract exej[i],e.filename,exed[i] 
+			   ?debug
+			   Print "= Written: "+exed[i]+"/"+e.filename
+			   ?
+			   EndIf
 			Next
 		bo = WriteStream(exed[i]+"/love.license.txt")
 		WriteLine bo,"This file only explains the license about the underlying LOVE2D engine. It says nothing about the game itself!~n~n"	
