@@ -1,7 +1,7 @@
 --[[
   lovemain.lua
   -- Launching script --
-  version: 16.03.27
+  version: 16.03.28
   Copyright (C) 2016 Jeroen P. Broks
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -24,11 +24,34 @@
       Project: -- title --
       
       This file contains all the basic stuff you need
-      to get a Love-Game of mine on the road.
+      to get a Love-Game of created with the LoveBuilder 
+      on the road.
       
       This script is put into a love project by a small
       builder utility, and only gets stuff running. It
       is not part of the project itself.
+      
+      A note about "viral" licenses (such as the GNU GPL).
+      This file is NOT part of the game itself. It has been
+      added to this game by my builder to make it possible for
+      the game to run at all. So yeah, this file may contain the
+      link to the GNU GPL files, but actually the GNU licensed
+      game is using this file and not the other way around.
+      
+      This file adds some stuff the game needs and runs it.
+      That's all. :)
+      
+      Therefore, this file itself, is and remains zLib licensed,
+      while the game it runs may have a GNU GPL or even an
+      "All Rights Reserved" license. Games that are Public Domain
+      do also not affect this. And the copyright of this file
+      will always remain under the name of Jeroen P. Broks, 
+      no matter who wrote the game itself.
+      
+      Basically, if you use a commercial compiler to compile
+      a GNU licensed program, the stuff the compiler adds to it
+      doesn't become GNU licenced either. This file is much the
+      same ;)      
       
 ]]      
 
