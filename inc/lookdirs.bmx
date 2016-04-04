@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 16.04.04
 End Rem
 Function LookDirs()
 	Local jd:TJCRDir
@@ -69,7 +69,8 @@ Function LookDirs()
 		Print "Adding: "+d
 		jd = JCR_Dir(pini.c("Projectdir."+platform)+"/"+d)
 		For Local f$=EachIn MapKeys(jd.entries)
-			If Prefixed(f,"JBL/") Or Prefixed(f,"JCR/") Print "WARNING! "+f+" makes use of a reserved directory. This may lead to undesirable behavior!"
+			If Prefixed(f,"JBL/") Or Prefixed(f,"JCR/") Or Prefixed(f,"LIBS/") Print "WARNING! "+f+" makes use of a reserved directory. This may lead To undesirable behavior!"
+			authoraddfile pini.c("dir.author."+d),pini.c("dir.lic."+d),TJCREntry(MapValueForKey(jd.entries,f)).filename
 			Next
 		JCR_AddPatch(project,jd)
 	Next		

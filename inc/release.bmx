@@ -20,9 +20,9 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.28
+Version: 16.04.04
 End Rem
-MKL_Version "Love Builder - release.bmx","16.03.28"
+MKL_Version "Love Builder - release.bmx","16.04.04"
 MKL_Lic     "Love Builder - release.bmx","GNU General Public License 3"
 
 
@@ -33,7 +33,7 @@ Function MacRelease(o$)
 	AddRaw mac,tempdir+"/zips/project.OSX.love","love.app/Contents/Resources/"+pini.c("Executable")+".love"
 	WriteStdout "Building application: "+pini.c("Release."+platform)+"/"+o+"/"+pini.c("Executable")+".app  ... "
 	?debug
-	Print "Debug data below
+	Print "Debug data below"
 	?Not debug
 	Local nument,cntent,prcent
 	For e=EachIn MapValues(mac.entries) nument:+1 Next

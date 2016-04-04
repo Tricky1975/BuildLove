@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 16.04.04
 End Rem
 Strict
 Framework tricky_units.initfile2
@@ -44,8 +44,9 @@ Include "inc/lookdirs.bmx"
 Include "inc/BuildProject.bmx"
 Include "inc/zip.bmx"
 Include "inc/release.bmx"
+Include "inc/writelicenses.bmx"
 
-MKL_Version "Love Builder - BuildLove.bmx","16.03.26"
+MKL_Version "Love Builder - BuildLove.bmx","16.04.04"
 MKL_Lic     "Love Builder - BuildLove.bmx","GNU General Public License 3"
 
 
@@ -87,4 +88,5 @@ BuildProject
 zip
 releasegames
 Print "Cleaning up my mess..."; If Not  DeleteDir(tempdir,1) warn "Tempdir ~q"+tempdir+"~q could not be removed.~n~t   This should not affect the built game, but only takes up diskspace and leads to a warning on the next build."
+WriteLicenses
 repeatwarnings

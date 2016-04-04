@@ -20,9 +20,9 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 16.04.04
 End Rem
-MKL_Version "Love Builder - globals.bmx","16.03.26"
+MKL_Version "Love Builder - globals.bmx","16.04.04"
 MKL_Lic     "Love Builder - globals.bmx","GNU General Public License 3"
 
 ?Win32
@@ -122,3 +122,21 @@ Global imports:TList = New TList
 Global importjcr:TJCRDir
 
 Global WarningList:TList = New TList
+
+Global AuthorMapVar:TMap = New TMap
+Function AuthorLics:TMap(Author$)
+If Not MapContains(AuthorMapVar,Author) MapInsert AuthormapVar,author,New TMap
+Local LicMap:TMap = TMap(MapValueForKey(authormapvar,author))
+Return licmap
+End function
+Function AuthorList:TList(Author$,License$)
+If Not MapContains(AuthorMapVar,Author) MapInsert AuthormapVar,author,New TMap
+Local LicMap:TMap = TMap(MapValueForKey(authormapvar,author))
+If Not MapContains(licmap,license) MapInsert licmap,license, New TList
+Return TList(MapValueForKey(licmap,license))
+End Function
+Function AuthorAddFile(Author$,license$,file$)
+Local L:TList = authorlist(author,license)
+ListAddLast L,file
+SortList L
+EndFunction

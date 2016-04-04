@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 16.04.04
 End Rem
 Function SetupDefs()
 Local dubbelepunt,List$,dkey$,L:TList
@@ -119,6 +119,7 @@ Function ConvertLua(prj:TJCRDir,file$)
 	Next
 	WriteStdout " "
 	' Action
+	Local lcl$
 	For line = EachIn Listfile(JCR_B(prj,file))
 		If (Not lines) Or Right(lines,3)="000" WriteStdout "."
 		lines:+1
@@ -127,7 +128,8 @@ Function ConvertLua(prj:TJCRDir,file$)
 		If Prefixed(trline,"-- *")
 			spline = trline.split(" ")
 			Select spline[1].tolower()
-				Case "*import","*require"
+				Case "*import","*require","*localimport"
+					If spline[1].tolower()="*localimport" lcl="local " Else lcl=""
 					check Len(spline)=3,"Incorrect number of parameters in line #"+lines
 					check ExtractExt(spline[2].tolower())<>"lua","Don't use the .lua extention in import requests! Line #"+lines
 					check ExtractExt(spline[2].tolower())<>"lll","Don't use the .lll extention in import requests! Line #"+lines
@@ -158,7 +160,7 @@ Function ConvertLua(prj:TJCRDir,file$)
 							EndIf
 						Next								
 					EndIf	
-					outwrite imp_var+" = "+imp_var+" or j_love_import(~q"+imp_file+"~q)~t"+line
+					outwrite lcl+imp_var+" = "+imp_var+" or j_love_import(~q"+imp_file+"~q)~t"+line
 				Case "*define"
 					For platform=EachIn wplatforms
 						outk=out(platform)
