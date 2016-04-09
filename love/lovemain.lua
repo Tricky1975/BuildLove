@@ -291,7 +291,7 @@ local work = {
                                                    ["boolean"]    = function(v) return ({[true]="true",[false]="false"})[v] end,
                                                    ["string"]     = function(v) return "\""..safestring(v).."\"" end
                                  }
-                                 local wrongindex = function() Sys.Error("Type "..titype.." can not be used as a table in serializing") end
+                                 local wrongindex = function() print("!ERROR! Type "..titype.." can not be used as a table in serializing") return "!WRONGINDEX" end
                                  local ret = "{"
                                  local k,v
                                  local result
