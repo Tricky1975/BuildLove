@@ -20,8 +20,14 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 16.04.09
 End Rem
+
+Import tricky_units.MKL_Version
+
+MKL_Version "Love Builder - incbin.bmx","16.04.09"
+MKL_Lic     "Love Builder - incbin.bmx","GNU General Public License 3"
+
 Incbin "Win32.jcr"
 Incbin "Win64.jcr"
 Incbin "Mac64.jcr"
