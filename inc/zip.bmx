@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 16.04.09
 End Rem
 Function zip()
 	Local pwd$ = CurrentDir()
@@ -28,14 +28,22 @@ Function zip()
 	CreateDir "Zips"
 	ChangeDir "Assets"
 	Print "Zipping assets"
+	?win32
+	system_ AppDir+"/zip ../Zips/Assets -9 -r *"
+	?Not win32
 	system_ "zip ../Zips/Assets -9 -r *"
+	?
 	ChangeDir "../Script"
 	For Local p$=EachIn wplatforms
 		If out(p).process
 			Print "Creating love file for "+out(p).losn
 			check CopyFile("../zips/assets.zip","../zips/project."+p+".love"),"Could not copy assets into full project file"
 			ChangeDir p
+			?win32
+			system_ AppDir+"zip ../../zips/project."+p+".love -9 -r *"
+			?Not win32
 			system_ "zip ../../zips/project."+p+".love -9 -r *"
+			?
 			ChangeDir ".."
 		EndIf
 	Next
