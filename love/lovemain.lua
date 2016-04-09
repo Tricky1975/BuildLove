@@ -1,7 +1,7 @@
 --[[
   lovemain.lua
   -- Launching script --
-  version: 16.03.28
+  version: 16.04.09
   Copyright (C) 2016 Jeroen P. Broks
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -261,7 +261,7 @@ return ret
 end
 
 function safestring(s)
-local allowed = "qwertyuiopasdfghjklzxcvbnmmQWERTYUIOPASDFGHJKLZXCVBNM 12345678890-_=+!@#$%^&*()"
+local allowed = "qwertyuiopasdfghjklzxcvbnmmQWERTYUIOPASDFGHJKLZXCVBNM 12345678890-_=+!@#$%^&*():;/"
 local i
 local safe = true
 local alt = ""
@@ -281,7 +281,7 @@ local ret = ""
 local work = {
                 ["nil"]        = function() return "nil" end,
                 ["number"]     = function() return vvalue end,
-                ["function"]   = function() Sys.Error("Cannot serialize functions") return "ERROR" end,
+                ["function"]   = function() return "'!ERROR! -- I cannot handle functions!'" end,
                 ["string"]     = function() return "\""..safestring(vvalue).."\"" end,
                 ["boolean"]    = function() return ({[true]="true",[false]="false"})[vvalue] end,
                 ["table"]      = function()
