@@ -313,7 +313,7 @@ local work = {
                                  end 
                                    
              }             
-local letsgo = work[type(vvalue)] or function() Sys.Error("Unknown type. Cannot serialize","Variable,"..vname..";Type Value,"..type(vvalue)) end
+local letsgo = work[type(vvalue)] or function() print("!ERROR! Unknown type. Cannot serialize","Variable,"..vname..";Type Value,"..type(vvalue)) return "whatever" end
 local i
 for i=1,tabs or 0 do ret = ret .."\t" end
 if vname then 
