@@ -1,7 +1,7 @@
 --[[
   lovemain.lua
   -- Launching script --
-  version: 16.04.09
+  version: 16.04.17
   Copyright (C) 2016 Jeroen P. Broks
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -56,8 +56,9 @@
 ]]      
 
 
-builddate = "-- builddate --"
-gametitle = "-- title --"
+builddate    = "-- builddate --"
+gametitle    = "-- title --"
+buildversion = "-- version --" 
 
 love.window.setTitle("-- title --")
 
@@ -261,7 +262,7 @@ return ret
 end
 
 function safestring(s)
-local allowed = "qwertyuiopasdfghjklzxcvbnmmQWERTYUIOPASDFGHJKLZXCVBNM 12345678890-_=+!@#$%^&*():;/<>[]{}"
+local allowed = "qwertyuiopasdfghjklzxcvbnmmQWERTYUIOPASDFGHJKLZXCVBNM 12345678890-_=+!@#$%^&*():;/<>[]{}.,"
 local i
 local safe = true
 local alt = ""

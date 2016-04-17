@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.04
+Version: 16.04.17
 End Rem
 Function SetupDefs()
 Local dubbelepunt,List$,dkey$,L:TList
@@ -260,6 +260,7 @@ EndFunction
 Function I_love_you(file$)
 Local script$=LoadString("incbin::LoveMain.lua")
 script = Replace(script,"-- builddate --",PNow())
+script = Replace(script,"-- version --",Right(Year(),2)+"."+Right("0"+Month(),2)+"."+Right("0"+Day(),2))
 script = Replace(script,"-- title --",pini.c("Title"))
 script = Replace(script,"-- import iloveyou --","j_love_import(~q"+file+"~q)")
 For Local platform$=EachIn wplatforms
