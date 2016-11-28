@@ -20,9 +20,9 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.04
+Version: 16.11.28
 End Rem
-MKL_Version "Love Builder - release.bmx","16.04.04"
+MKL_Version "Love Builder - release.bmx","16.11.28"
 MKL_Lic     "Love Builder - release.bmx","GNU General Public License 3"
 
 
@@ -112,6 +112,14 @@ Function WinRelease(o$)
 		CloseStream bo
 	Next			
 End Function; out("WIN").releasegame = winrelease
+
+
+Function LinRelease(o$)
+Local lout$ = pini.c("Release."+platform)+"/"+o+"/"+pini.c("Executable")+".linux.love"
+check CopyFile(tempdir+"/zips/project.LIN.love",lout),"Copy love file failed"
+'Print "WARNING! Linux batch files not yet present in builder. Planned for future versions!"
+Print "Linux output file: "+lout
+End Function; out("LIN").releasegame = LinRelease
 
 Function ReleaseGames()
 	Local r(os$)

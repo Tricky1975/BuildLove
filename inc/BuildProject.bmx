@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.17
+Version: 16.11.28
 End Rem
 Function SetupDefs()
 Local dubbelepunt,List$,dkey$,L:TList
@@ -121,7 +121,7 @@ Function ConvertLua(prj:TJCRDir,file$)
 	' Action
 	Local lcl$
 	For line = EachIn Listfile(JCR_B(prj,file))
-		If (Not lines) Or Right(lines,3)="000" WriteStdout "."
+		If (Not lines) Or Right(lines,2)="00" WriteStdout "."
 		lines:+1
 		line = Replace(line,"$$mydir$$",ExtractDir(file))
 		trline = Trim(line)

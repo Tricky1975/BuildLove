@@ -1,7 +1,7 @@
 --[[
   lovemain.lua
   -- Launching script --
-  version: 16.04.17
+  version: 16.11.28
   Copyright (C) 2016 Jeroen P. Broks
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -92,7 +92,7 @@ boolon = { [true] =  "on", [false] = "off" }
 function each(a) -- BLD: Can be used if you only need the values in a nummeric indexed tabled. (as ipairs will always return the indexes as well, regardeless if you need them or not)
 local i=0
 if type(a)~="table" then
-   Console.Write("Each received a "..type(a).."!",255,0,0)
+   print("Each received a "..type(a).."!",255,0,0)
    return nil
    end
 return function()
@@ -101,10 +101,10 @@ return function()
     end
 end
 
-function ieach(a) -- BLD: Same as each, but not in reversed order
+function ieach(a) -- BLD: Same as each, but now in reversed order
 local i=#a+1
 if type(a)~="table" then
-   Console.Write("IEach received a "..type(a).."!",255,0,0)
+   print("IEach received a "..type(a).."!",255,0,0)
    return nil
    end
 return function()
