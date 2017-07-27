@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.11.28
+Version: 17.07.27
 End Rem
-MKL_Version "Love Builder - release.bmx","16.11.28"
+MKL_Version "Love Builder - release.bmx","17.07.27"
 MKL_Lic     "Love Builder - release.bmx","GNU General Public License 3"
 
 
@@ -62,6 +62,8 @@ Function MacRelease(o$)
 			infomac = Replace(infomac,"{build}",Right(Year(),2)+"."+Right("0"+Month(),2)+"."+Right("0"+Day(),2))
 			infomac = Replace(infomac,"{copyright}",copyright)			
 			SaveString infomac,target
+		ElseIf e.filename.tolower()="love.app/contents/macos/love"
+			If Not FileType(e.filename) JCR_Extract mac,e.filename,target,True
 		Else
 			JCR_Extract mac,e.filename,target,True
 		EndIf			
