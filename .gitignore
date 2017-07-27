@@ -7,3 +7,16 @@ gitupdate
 *.tar.gz
 Love
 MKL_*
+
+
+BuildLove
+BuildLove.Mac.ini
+BuildLove.Windows.ini
+BuildLove.app
+BuildLove.debug
+LinuxNoCompile.sh
+LinuxNoLove
+NoLove.linux
+iss
+linscript.sh
+
