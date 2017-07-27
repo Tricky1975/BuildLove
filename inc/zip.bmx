@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,14 +20,34 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.11.28
+Version: 17.07.27
 End Rem
+
+MKL_Version "Love Builder - zip.bmx","17.07.27"
+MKL_Lic     "Love Builder - zip.bmx","GNU General Public License 3"
+
 Function zip()
 	Local pwd$ = CurrentDir()
 	ChangeDir Tempdir
 	CreateDir "Zips"
 	ChangeDir "Assets"
 	Print "Zipping assets"
+	' This file contains some info, and it prevents bugs too.
+	Local BT:TStream = WriteFile("lovebuilder.info.txt")
+	WriteLine bt,"== Created with Love Builder =="
+	WriteLine bt,"Project:         "+pini.C("Title")
+	WriteLine bt,"Author:          "+pini.C("Author")
+	WriteLine bt,"Project file:    "+pinifile
+	WriteLine bt,"Built:           "+CurrentDate()+" "+CurrentTime()
+	WriteLine bt,"Builder version: "+MKL_NewestVersion()
+	?MacOS
+	WriteLine bt,"Builder OS:      Apple MacOS/MacOS X/OS X/Darwin"
+	?Linus
+	WriteLine bt,"Builder OS:      Linux"
+	?Win32
+	WriteLine bt,"Builder OS:      Microsoft Windows"
+	?
+	CloseFile bt
 	?win32
 	system_ AppDir+"\zip ..\Zips\Assets -9 -r *"
 	?Not win32
