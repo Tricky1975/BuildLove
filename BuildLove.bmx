@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,10 +20,11 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.04
+Version: 17.08.16
 End Rem
+
 Strict
-Framework tricky_units.initfile2
+Framework tricky_units.gini
 'Import "/projects/blitzmax/jcr6+/units/dirry/dirry.bmx" 'Temp line
 Import tricky_units.Dirry
 Import tricky_units.ListDir
@@ -46,7 +47,7 @@ Include "inc/zip.bmx"
 Include "inc/release.bmx"
 Include "inc/writelicenses.bmx"
 
-MKL_Version "Love Builder - BuildLove.bmx","16.04.04"
+MKL_Version "Love Builder - BuildLove.bmx","17.08.16"
 MKL_Lic     "Love Builder - BuildLove.bmx","GNU General Public License 3"
 
 

@@ -20,13 +20,14 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.07.27
+Version: 17.08.16
 End Rem
-MKL_Version "Love Builder - release.bmx","17.07.27"
+MKL_Version "Love Builder - release.bmx","17.08.16"
 MKL_Lic     "Love Builder - release.bmx","GNU General Public License 3"
 
 
 Function MacRelease(o$)
+Rem
 	Local mac:TJCRDir = JCR_Dir("incbin::Mac64.jcr")
 	Local e:TJCREntry
 	Local target$,infomac$,copyright$=""
@@ -71,6 +72,45 @@ Function MacRelease(o$)
 	?Not debug
 	Print "done   "
 	?
+End Rem
+	Local target$,infomac$,copyright$=""
+	Local outapp$ = pini.c("Release."+platform)+"/"+o+"/"+pini.c("Executable")+".app"
+	Select FileType(outapp)
+		Case 1
+			Print "ERROR: There is a FILE named `"+outapp+"` -- It blocks me from writing a mac app!"
+			Return
+		Case 2
+			Print "Updating application: "+outapp
+		Case 0
+			Print "Creating application: "+outapp
+			Local temp$=Dirry("$AppSupport$/BuildLove/MacTemp")
+			If Not CreateDir(temp,1)
+				Print "ERROR: No swap dir could be created"
+				Return
+			EndIf
+			Print "= Extracting core data"
+			CopyFile "incbin::Mac64.zip",temp+"/Mac64.zip"
+			Local cd$=CurrentDir()
+			ChangeDir temp
+			Print "= Extracting app data"
+			system_ "unzip Mac64 > UnpackResult.txt"
+			Print "= Installing base app"
+			ChangeDir cd
+			?win32
+			system_ "move '"+Replace(temp,"/","\")+"\love.app' '"+outapp+"'"
+			?Not win32
+			system_ "mv '"+temp+"/love.app' '"+outapp+"'"
+			?
+	End Select	
+	Print "= Iconing application"
+	Local tgt$[]=[outapp+"/Contents/Resources/OS X AppIcon.icns",outapp+"/Contents/Resources/GameIcon.icns"]
+		For target = EachIn tgt
+			If Not CopyFile(pini.c("MacIcon."+platform),target) warn "Could not copy "+pini.c("MacIcon."+platform)+" to "+target
+		Next
+	Print "= Installing game's resources"
+	check CopyFile(tempdir+"/zips/project.OSX.love",outapp+"/Contents/Resources/"+pini.c("Executable")+".love"),"Copying data failed!"
+	Print "= Done"						
+	
 End Function; out("OSX").releasegame = MacRelease
 
 

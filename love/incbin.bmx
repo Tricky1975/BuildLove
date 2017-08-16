@@ -31,5 +31,5 @@ MKL_Lic     "Love Builder - incbin.bmx","GNU General Public License 3"
 
 Incbin "Win32.jcr"
 Incbin "Win64.jcr"
-Incbin "Mac64.jcr"
+Incbin "Mac64.zip"
 Incbin "LoveMain.lua"
