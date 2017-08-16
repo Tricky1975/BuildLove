@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,12 +20,13 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.09
+Version: 17.08.16
 End Rem
+
 
 Import tricky_units.MKL_Version
 
-MKL_Version "Love Builder - incbin.bmx","16.04.09"
+MKL_Version "Love Builder - incbin.bmx","17.08.16"
 MKL_Lic     "Love Builder - incbin.bmx","GNU General Public License 3"
 
 Incbin "Win32.jcr"

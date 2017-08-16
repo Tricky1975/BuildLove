@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,13 +20,17 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.04
+Version: 17.08.16
 End Rem
 Function LookDirs()
 	Local jd:TJCRDir
 	Local d$
+	pini.clist "IMPORT",True
 	If pini.c("MULTIDIR").toUpper()<>"Y" 
 		project = JCR_Dir(pini.c("Projectdir."+platform))
+		For Local i$=EachIn pini.list("IMPORT")
+			JCR_AddPatch project , JCR_Dir(Trim(i$))
+		Next	
 		Return
 	EndIf	
 	Print "Looking for dirs: "
@@ -36,8 +40,12 @@ Function LookDirs()
 	Local ly:TList = pini.list("I_WANT_YOU")
 	Local ln:TList = pini.list("I_DONT_WANT_YOU")
 	Local lic:TList = pini.list("LICS")
-	For d$=EachIn ListDir(pini.c("Projectdir."+platform))
-		If JCR_Type((pini.c("Projectdir."+platform))+"/"+d)
+	Local DirList:TList = ListDirFull(pini.c("Projectdir."+platform))
+	For d=EachIn pini.list("IMPORT")
+		For Local d2$=EachIn ListDirFull(d) ListAddLast dirlist,d2 Next
+	Next		
+	For d$=EachIn dirlist
+		If JCR_Type(d) '(pini.c("Projectdir."+platform))+"/"+d)
 			If Not ( ListContains(ly,d) Or ListContains(ln,d) )
 				If yes("Allow dir ~q"+d+"~q")
 					ListAddLast ly,d
@@ -67,7 +75,7 @@ Function LookDirs()
 	Print  "Adding directories to project"
 	For d$=EachIn ly
 		Print "Adding: "+d
-		jd = JCR_Dir(pini.c("Projectdir."+platform)+"/"+d)
+		jd = JCR_Dir(d) 'pini.c("Projectdir."+platform)+"/"+d)
 		For Local f$=EachIn MapKeys(jd.entries)
 			If Prefixed(f,"JBL/") Or Prefixed(f,"JCR/") Or Prefixed(f,"LIBS/") Print "WARNING! "+f+" makes use of a reserved directory. This may lead To undesirable behavior!"
 			authoraddfile pini.c("dir.author."+d),pini.c("dir.lic."+d),TJCREntry(MapValueForKey(jd.entries,f)).filename

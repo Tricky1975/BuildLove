@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 17.08.16
 End Rem
 Function Need$(ini:TIni,Tag$,Question$,DefaultValue$,isfile=False)
 If ini.c(tag) Return Print(Question+": "+ini.c(tag))
@@ -45,7 +45,7 @@ Need pini,"Title","Project title",StripAll(pinifile)
 need pini,"Projectdir."+platform,"Project dir",ExtractDir(pinifile)+"/project"
 Need pini,"MultiDir","Multi-dir project ? (Y/N) ","Y"
 Need pini,"MacIcon."+platform,"Mac Icon",ExtractDir(pinifile)+"/project/"+StripAll(pinifile)+".icns"
-Need pini,"Executable","Executable",Replace(pini.c("Title")," ","_")
+Need pini,"Executable","Executable (without pathname)",Replace(pini.c("Title")," ","_")
 need pini,"Release."+platform,"Release directory","*REQUIRED*"
 need pini,"You","And you are","Mr. Nobody"
 EndFunction
