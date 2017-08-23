@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.11.28
+Version: 17.08.23
 End Rem
 Function SetupDefs()
 Local dubbelepunt,List$,dkey$,L:TList
@@ -250,6 +250,19 @@ Function Build(aprj:TJCRDir)
 				Print "= Copying: "+f
 				check CreateDir(tempdir+"/Assets/"+ExtractDir(f),1),"Could not create target asset it"
 				check SaveBank(JCR_B(prj,f),Tempdir+"/Assets/"+f),"Copy failed!"
+				If JCR_Type(Tempdir+"/Assets/"+f)
+					need pini,"jcr6unpack["+f+"]","The file "+f+" has been recognized as "+JCR_Type(Tempdir+"/Assets/"+f)+"~nDo you want to merge its content in the project ? (Y/N) ","Y"
+					If Left(pini.C("jcr6unpack["+f+"]"),1).toupper()="Y" 
+						CopyFile Tempdir+"/Assets/"+f,Tempdir+"/JCR_TEMP.JCR"
+						DeleteFile Tempdir+"/Assets/"+f
+						Local TJ:TJCRDir = JCR_Dir(Tempdir+"/JCR_TEMP.JCR")
+						CreateDir tempdir+"/Assets/"+f
+						For Local tf$=EachIn MapKeys(tj.entries)
+							Print "= Extracting "+tf+" from "+f
+							JCR_Extract tj,tf,tempdir+"/Assets/"+f
+						Next
+					EndIf
+				EndIf	
 			EndIf
 		Next	
 		prj = importjcr

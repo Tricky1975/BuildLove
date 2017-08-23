@@ -20,9 +20,9 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.08.16
+Version: 17.08.23
 End Rem
-MKL_Version "Love Builder - release.bmx","17.08.16"
+MKL_Version "Love Builder - release.bmx","17.08.23"
 MKL_Lic     "Love Builder - release.bmx","GNU General Public License 3"
 
 
@@ -107,6 +107,22 @@ End Rem
 		For target = EachIn tgt
 			If Not CopyFile(pini.c("MacIcon."+platform),target) warn "Could not copy "+pini.c("MacIcon."+platform)+" to "+target
 		Next
+	'Rem	
+	
+	Print "= Writing game's meta data"
+			copyright=""
+			For Local yr$=EachIn pini.list("years")
+				If copyright copyright:+", "
+				copyright:+yr
+			Next
+			copyright:+"  "+pini.c("you")
+			infomac = LoadString("incbin::info.plist") 'JCR_B(mac,love.app/contents/info.plist))
+			infomac = Replace(infomac,"{title}",pini.c("Title"))
+			infomac = Replace(infomac,"{build}",Right(Year(),2)+"."+Right("0"+Month(),2)+"."+Right("0"+Day(),2))
+			infomac = Replace(infomac,"{copyright}",copyright)			
+			SaveString infomac,outapp+"/Contents/info.plist"
+	'End Rem		
+			
 	Print "= Installing game's resources"
 	check CopyFile(tempdir+"/zips/project.OSX.love",outapp+"/Contents/Resources/"+pini.c("Executable")+".love"),"Copying data failed!"
 	Print "= Done"						

@@ -1,8 +1,8 @@
 --[[
   lovemain.lua
   -- Launching script --
-  version: 16.11.28
-  Copyright (C) 2016 Jeroen P. Broks
+  version: 17.08.23
+  Copyright (C) 2016, 2017 Jeroen P. Broks
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
   arising from the use of this software.
@@ -306,7 +306,7 @@ local work = {
                                      end
                                  if notfirst then    
                                    ret = ret .."\n"    
-                                   for i=1,tabs or 0 do ret = ret .."\t" end   
+                                   for i=1,(tabs or 0) do ret = ret .."\t" end   
                                    for i=1,len(vname.." = ") do ret = ret .. " " end
                                    end 
                                  ret = ret .. "}"  
@@ -316,7 +316,7 @@ local work = {
              }             
 local letsgo = work[type(vvalue)] or function() print("!ERROR! Unknown type. Cannot serialize","Variable,"..vname..";Type Value,"..type(vvalue)) return "whatever" end
 local i
-for i=1,tabs or 0 do ret = ret .."\t" end
+for i=1,(tabs or 0) do ret = ret .."\t" end
 if vname then 
    ret = ret .. vname .." = "..letsgo()
    else
@@ -339,6 +339,14 @@ ret = TRUE_SERIALIZE(vname,v)
 return ret
 end
 
+function sval(a)
+return 
+  (({
+     ['string']=function() return a end,
+     ['number']=function() return a end,
+     ['boolean']=function() if a then return 'true' else return 'false' end     
+  })[type(a)] or function() return "<< "..type(a).." >>" end)()
+end  
 
 
 
