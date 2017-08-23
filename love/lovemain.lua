@@ -344,7 +344,7 @@ return
   (({
      ['string']=function() return a end,
      ['number']=function() return a end,
-     ['boolean']=function() if a then return 'true' else return 'false' end     
+     ['boolean']=function() if a then return 'true' else return 'false' end     end
   })[type(a)] or function() return "<< "..type(a).." >>" end)()
 end  
 
