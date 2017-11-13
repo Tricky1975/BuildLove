@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.04
+Version: 17.11.12
 End Rem
-MKL_Version "Love Builder - globals.bmx","16.04.04"
+MKL_Version "Love Builder - globals.bmx","17.11.12"
 MKL_Lic     "Love Builder - globals.bmx","GNU General Public License 3"
 
 ?Win32
@@ -55,6 +55,8 @@ Global WinDefs:TList = New TList; ListAddLast WinDefs,"$WINDOWS" ListAddLast win
 Global LinDefs:TList = New TList; ListAddLast LinDefs,"$LINUX" ListAddLast LinDefs,"$LIN"
 Global AndDefs:TList = New TList; ListAddLast LinDefs,"$ANDROID"
 Global iOSDefs:TList = New TList; ListAddLast iOSDefs,"$IOS"
+
+Global JCRINDEX:StringMap = New StringMap
 
 
 Global DefsMap:TMap = New TMap
@@ -108,7 +110,9 @@ Function DefsList:TList(Tag$)
 	Return Toutos(e).defs
 End Function
 Function out:toutos(tag$)
-	Return Toutos(MapValueForKey(defsmap,Upper(tag)))
+	Local ret : toutos = Toutos(MapValueForKey(defsmap,Upper(tag)))
+	If Not ret warn "No platform data on tag: "+tag
+	Return ret
 End Function
 	
 Type TImport
@@ -128,7 +132,7 @@ Function AuthorLics:TMap(Author$)
 If Not MapContains(AuthorMapVar,Author) MapInsert AuthormapVar,author,New TMap
 Local LicMap:TMap = TMap(MapValueForKey(authormapvar,author))
 Return licmap
-End function
+End Function
 Function AuthorList:TList(Author$,License$)
 If Not MapContains(AuthorMapVar,Author) MapInsert AuthormapVar,author,New TMap
 Local LicMap:TMap = TMap(MapValueForKey(authormapvar,author))
@@ -140,3 +144,5 @@ Local L:TList = authorlist(author,license)
 ListAddLast L,file
 SortList L
 EndFunction
+
+Function D$(txt$,dt$="=",c=A_Cyan) Return ANSI_SCol(dt,c,A_blink)+" "+ANSI_SCol(txt,c) End Function

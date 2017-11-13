@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.08.16
+Version: 17.11.12
 End Rem
 
 Strict
@@ -31,6 +31,8 @@ Import tricky_units.ListDir
 Import tricky_units.Listfile
 Import tricky_units.advdatetime
 Import tricky_units.prefixsuffix
+Import tricky_units.CreateIndexFiles
+Import tricky_units.ansistring
 Import jcr6.zlibdriver
 Import jcr6.realdir
 Import jcr6.fileasjcr
@@ -47,14 +49,18 @@ Include "inc/zip.bmx"
 Include "inc/release.bmx"
 Include "inc/writelicenses.bmx"
 
-MKL_Version "Love Builder - BuildLove.bmx","17.08.16"
+MKL_Version "Love Builder - BuildLove.bmx","17.11.12"
 MKL_Lic     "Love Builder - BuildLove.bmx","GNU General Public License 3"
 
 
 AppTitle = "BuildLove v"+MKL_NewestVersion()+" - Make Love Not War!"
-Print "BuildLove v"+MKL_NewestVersion()
-Print "Coded by: Tricky"
-Print "(c) Jeroen Broks 2016"
+Print ANSI_Col("BuildLove v"+MKL_NewestVersion(),A_Yellow,A_Red)
+Print ANSI_SCol("Coded by: Tricky",A_Yellow,A_Italic)
+Print ANSI_SCol("(c) Jeroen Broks 2016",A_Yellow,A_Dark)
+
+?debug
+warn "Please note that this is the DEBUG build of the builder!!!"
+?
 
 If (Len AppArgs)<2
 	Print MKL_GetAllversions()
@@ -80,7 +86,7 @@ If Not FileType(pinifile)
 	Print "Project created~n"
 EndIf
 
-Print "Processing project: "+pinifile
+Print ANSI_SCol("Processing project: ",A_Cyan)+ANSI_SCol(pinifile,A_Magenta)
 LoadIni pinifile,pini
 
 DefaultIni
@@ -88,6 +94,6 @@ LookDirs
 BuildProject
 zip
 releasegames
-Print "Cleaning up my mess..."; If Not  DeleteDir(tempdir,1) warn "Tempdir ~q"+tempdir+"~q could not be removed.~n~t   This should not affect the built game, but only takes up diskspace and leads to a warning on the next build."
+Print ANSI_SCol("Cleaning up my mess...",A_Cyan); If Not  DeleteDir(tempdir,1) warn "Tempdir ~q"+tempdir+"~q could not be removed.~n~t   This should not affect the built game, but only takes up diskspace and leads to a warning on the next build."
 WriteLicenses
 repeatwarnings

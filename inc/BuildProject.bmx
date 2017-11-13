@@ -20,11 +20,11 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.08.23
+Version: 17.11.14
 End Rem
 Function SetupDefs()
 Local dubbelepunt,List$,dkey$,L:TList
-Print "Checking Definitions"
+Print ANSI_SCol("Checking Definitions",A_Cyan)
 pini.clist("Defs",1)
 gini.clist("Defs",1)
 WriteStdout "__~r"
@@ -86,7 +86,7 @@ Function OutWrite(atxt$,force=False)
 EndFunction
 
 Function ConvertLua(prj:TJCRDir,file$)
-	WriteStdout "= Adepting: "+file+" "
+	WriteStdout ANSI_SCol("= Adepting:    ",A_Cyan)+ANSI_SCol(file+" ",A_Magenta)
 	Local platform$
 	Local outk:toutos
 	Local lines,line$,trline$,spline$[]
@@ -105,7 +105,7 @@ Function ConvertLua(prj:TJCRDir,file$)
 		If Not outk error "Null-platform on: "+platform,True
 		outk.process = pini.c("OUTOS."+platform).toupper()="Y"
 		If outk.process
-			WriteStdout Chr(platform[0])
+			WriteStdout ANSI_SCol(Chr(platform[0]),A_Blue)
 			outk.allow=True
 			outk.dir=Tempdir+"/Script/"+platform+"/"+ExtractDir(file)
 			check CreateDir(outk.dir,1) , outk.dir+" could not be created"
@@ -116,12 +116,26 @@ Function ConvertLua(prj:TJCRDir,file$)
 				ListAddLast warnings, outk.file+" could not be created. This will very likely deem errors in the "+outk.losn+" version"
 			EndIf
 		EndIf
-	Next
+		If Not MapContains(JCRINDEX,platform) MapInsert(JCRINDEX,platform,"")
+	Next	
 	WriteStdout " "
 	' Action
 	Local lcl$
-	For line = EachIn Listfile(JCR_B(prj,file))
-		If (Not lines) Or Right(lines,2)="00" WriteStdout "."
+	Local orifile:TList 
+	Local oriattempts = 0
+	Repeat		
+		orifile = Listfile(JCR_B(prj,file))
+		oriattempts = 0
+		If (Not orifile) 
+			oriattempts:+1
+			WriteStdout ANSI_SCol("ATTEMPT #"+oriattempts+" FAILED!!  ... ",A_Red,A_Blink)
+			If oriattempts>10
+				If yes("~nReading: "+file+" keeps failing!~nTry another 10 rounds") oriattempts=0
+			EndIf
+		EndIf
+	Until orifile
+	For line = EachIn orifile
+		If (Not lines) Or Right(lines,2)="00" WriteStdout ANSI_SCol(".",A_Cyan,A_Dark)
 		lines:+1
 		line = Replace(line,"$$mydir$$",ExtractDir(file))
 		trline = Trim(line)
@@ -129,6 +143,7 @@ Function ConvertLua(prj:TJCRDir,file$)
 			spline = trline.split(" ")
 			Select spline[1].tolower()
 				Case "*import","*require","*localimport"
+					WriteStdout ANSI_SCol("_",A_Yellow,A_Dark)
 					If spline[1].tolower()="*localimport" lcl="local " Else lcl=""
 					check Len(spline)=3,"Incorrect number of parameters in line #"+lines
 					check ExtractExt(spline[2].tolower())<>"lua","Don't use the .lua extention in import requests! Line #"+lines
@@ -227,16 +242,19 @@ Function ConvertLua(prj:TJCRDir,file$)
 	Next
 	' Closure
 	For platform=EachIn wplatforms
-		If out(platform).process CloseFile out(platform).bt
+		If out(platform).process 
+			CloseFile out(platform).bt
+			JCRINDEX.AddText platform,"ENTRY:"+file+"~n"+CIF_FileData(outk.file)+"~n~n"
+		EndIf	
 	Next	
-	If line=1 Print " done (1 line)" Else Print " done ("+lines+" lines)"
+	If line=1 Print ANSI_SCol(" done (1 line)",A_Green) Else Print ANSI_SCol(" done ("+lines+" lines)",A_Green)
 	For Local W$=EachIn warnings warn(W) Next
 	Return external_requests_done
 End Function
 
 Function Build(aprj:TJCRDir)
 	Local prj:TJCRDir=aprj
-	Print "~n~nBuilding project"
+	Print ANSI_SCol("~n~nBuilding project",A_CYan)
 	Local wantimports,uitslag
 	Repeat
 		importjcr:TJCRDir = New TJCRDir
@@ -247,21 +265,24 @@ Function Build(aprj:TJCRDir)
 				wantimports = wantimports Or uitslag
 				'Print "Wantimports: "+wantimports+" uitslag: "+uitslag
 			Else
-				Print "= Copying: "+f
+				Print ANSI_SCol("= Copying:     ",A_Cyan)+ANSI_SCol(f,A_magenta)
 				check CreateDir(tempdir+"/Assets/"+ExtractDir(f),1),"Could not create target asset it"
 				check SaveBank(JCR_B(prj,f),Tempdir+"/Assets/"+f),"Copy failed!"
 				If JCR_Type(Tempdir+"/Assets/"+f)
-					need pini,"jcr6unpack["+f+"]","The file "+f+" has been recognized as "+JCR_Type(Tempdir+"/Assets/"+f)+"~nDo you want to merge its content in the project ? (Y/N) ","Y"
+					If Not pini.c("jcr6unpack["+f+"]") need pini,"jcr6unpack["+f+"]","The file "+f+" has been recognized as "+JCR_Type(Tempdir+"/Assets/"+f)+"~nDo you want To merge its content in the project ? (Y/N) ","Y"
 					If Left(pini.C("jcr6unpack["+f+"]"),1).toupper()="Y" 
 						CopyFile Tempdir+"/Assets/"+f,Tempdir+"/JCR_TEMP.JCR"
 						DeleteFile Tempdir+"/Assets/"+f
 						Local TJ:TJCRDir = JCR_Dir(Tempdir+"/JCR_TEMP.JCR")
 						CreateDir tempdir+"/Assets/"+f
 						For Local tf$=EachIn MapKeys(tj.entries)
-							Print "= Extracting "+tf+" from "+f
+							Print ANSI_SCol("Extracting: ",A_Cyan)+ANSI_SCol(tf,A_Magenta)+ANSI_SCol(" from ",A_Cyan)+ANSI_SCol(f,A_red)
 							JCR_Extract tj,tf,tempdir+"/Assets/"+f
+							JCRINDEX.addtext "Assets","ENTRY: "+Upper(f)+"/"+tf+"~n"+CIF_FileData(Tempdir+"/Assets/"+f+"/"+tf)+"~n~n"
 						Next
 					EndIf
+				Else
+					JCRINDEX.addtext "Assets","ENTRY: "+f+"~n"+CIF_FileData(Tempdir+"/Assets/"+f)+"~n~n"
 				EndIf	
 			EndIf
 		Next	
@@ -271,20 +292,24 @@ Function Build(aprj:TJCRDir)
 EndFunction
 
 Function I_love_you(file$)
-Local script$=LoadString("incbin::LoveMain.lua")
-script = Replace(script,"-- builddate --",PNow())
-script = Replace(script,"-- version --",Right(Year(),2)+"."+Right("0"+Month(),2)+"."+Right("0"+Day(),2))
-script = Replace(script,"-- title --",pini.c("Title"))
-script = Replace(script,"-- import iloveyou --","j_love_import(~q"+file+"~q)")
-For Local platform$=EachIn wplatforms
-	If out(platform).process SaveString script,tempdir+"/script/"+platform+"/main.lua"
+	Local script$=LoadString("incbin::LoveMain.lua")
+	script = Replace(script,"-- builddate --",PNow())
+	script = Replace(script,"-- version --",Right(Year(),2)+"."+Right("0"+Month(),2)+"."+Right("0"+Day(),2))
+	script = Replace(script,"-- title --",pini.c("Title"))
+	script = Replace(script,"-- import iloveyou --","j_love_import(~q"+file+"~q)")
+	For Local platform$=EachIn wplatforms
+		If out(platform).process 
+			SaveString script,tempdir+"/script/"+platform+"/main.lua"
+			CreateDir tempdir+"/script/"+platform+"/JCR6",1
+			SaveString JCRINDEX.Value(platform)+"~n~n"+JCRINDEX.Value("Assets"),tempdir+"/script/"+platform+"/JCR6/index"
+		EndIf
 	Next
 End Function
 
 Function BuildProject()
 	Print
 	If FileType(tempdir)
-		Print "The temp dir still exists! Probably due to a failed session!"
+		Print ANSI_Col("The temp dir still exists! Probably due to a failed session!",A_Yellow,A_Blue)
 		If Not yes("Do you want to delete it") End
 		check DeleteDir(tempdir,1),"Could not delete: "+Tempdir
 	EndIf

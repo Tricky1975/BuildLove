@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.26
+Version: 17.11.12
 End Rem
 Function ERROR(E$,internal=False)
-Print "ERROR!"
-Print  E
+Print ANSI_Col("ERROR!",A_RED,A_YELLOW,A_BLINK)
+Print ANSI_Col(E,A_Red)
 Print
 If internal
 	Print "This is an internal error!"
@@ -40,8 +40,8 @@ error err,internal
 End Function
 
 Function Warn(W$)
-Print "WARNING!"
-Print W
+Print ANSI_SCol("WARNING!",A_Yellow,A_blink)
+Print ANSI_sCol(W,A_Yellow,A_Dark)
 ListAddLast warninglist,W
 End Function
 
@@ -60,5 +60,5 @@ Print
 End Function	
 
 
-MKL_Version "Love Builder - error.bmx","16.03.26"
+MKL_Version "Love Builder - error.bmx","17.11.12"
 MKL_Lic     "Love Builder - error.bmx","GNU General Public License 3"

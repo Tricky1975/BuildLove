@@ -1,7 +1,7 @@
 --[[
   lovemain.lua
   -- Launching script --
-  version: 17.08.23
+  version: 17.11.12
   Copyright (C) 2016, 2017 Jeroen P. Broks
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -302,7 +302,7 @@ local work = {
                                      titype = type(k)
                                      result = (tindex[titype] or wrongindex)(k)
                                      -- print(titype.."/"..k)
-                                     ret = ret .. TRUE_SERIALIZE("["..result.."]",v,(tabs or 0)+1,true)                                      
+                                     ret = ret .. TRUE_SERIALIZE("["..result.."]",v,(tabs or 0)+1,true)
                                      end
                                  if notfirst then    
                                    ret = ret .."\n"    

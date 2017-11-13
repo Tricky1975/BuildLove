@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.04.04
+Version: 17.11.12
 End Rem
 Global Lics:TList = New TList
 
@@ -28,7 +28,11 @@ Type TLicWrite
 	Method tag$() Abstract
 	Method name$() Abstract
 	Method MakeItHappen(bt:TStream) Abstract
-	Method New() Final ListAddLast Lics,Self End Method
+	Method New() Final 
+		ListAddLast Lics,Self 
+		'DebugLog "License output supported: "+tag()+" >> "+Name()
+		DebugLog "lic -- added"
+	End Method
 End Type
 
 Type licHtml Extends TLicWrite
@@ -94,11 +98,13 @@ New licmd
 Function WriteLicenses()
 	Local coutf$
 	Local Bt:TStream
+	Print ANSI_SCol("Writing credits",A_Cyan)
 	For Local lic:tlicwrite = EachIn Lics
-		coutf = pini.c("CREDITOUT."+lic.tag()+"."+platform)
+		Need pini,"CREDITOUT."+lic.tag()+"."+platform,"Credits dir ("+lic.tag()+")",pini.c("Projectdir."+platform)
+		coutf = pini.c("CREDITOUT."+lic.tag()+"."+platform)+"."+lic.Tag()
 		DebugLog "License output for: "+lic.tag()+"? ("+lic.name()+") >>> "+coutf+" <<< "+"CREDITOUT."+lic.tag()+"."+platform
 		If coutf
-			Print "Writing credits into "+lic.name()+" >> "+coutf
+			Print ANSI_SCol("Writing credits into ",A_CYAN)+ANSI_SCol(lic.name(),A_Magenta)+ANSI_SCol(" >> ",A_Yellow)+ANSI_SCol(coutf,A_Red)
 			CreateDir ExtractDir(coutf),1
 			bt = WriteFile(coutf)
 			pini.clist("PreLic."+lic.tag(),1)

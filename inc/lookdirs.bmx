@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.08.16
+Version: 17.11.12
 End Rem
 Function LookDirs()
 	Local jd:TJCRDir
@@ -33,7 +33,7 @@ Function LookDirs()
 		Next	
 		Return
 	EndIf	
-	Print "Looking for dirs: "
+	Print ANSI_SCol("Looking for dirs: ",A_Cyan)
 	pini.clist "I_WANT_YOU",True
 	pini.clist "I_DONT_WANT_YOU",True
 	pini.clist "LICS"
@@ -57,11 +57,11 @@ Function LookDirs()
 				SaveIni pinifile,pini
 			EndIf	
 			If ListContains(ly,d)
-				Print "Will add: "+D
+				Print ANSI_SCol("Will add: ",A_yellow,A_dark)+ANSI_SCol(D,A_magenta)
 				Need pini,"Dir.Author."+d,"Author",d
 				If Not pini.c("Dir.Lic."+d)
-					Print "We got the next license codes: "
-					For Local lc$=EachIn lic Print "* "+lc Next
+					Print ANSI_SCol("We got the next license codes: ",A_Yellow,A_Bright)
+					For Local lc$=EachIn lic Print ANSI_SCol("* ",A_Blue,A_Blink)+ANSI_SCol(lc,A_magenta) Next
 				EndIf
 				need pini,"Dir.Lic."+d,"License Tag: ","UNKNOWN"
 				If Not ListContains(lic,pini.c("Dir.Lic."+d)) 
@@ -72,9 +72,9 @@ Function LookDirs()
 			EndIf
 		EndIf	
 	Next	
-	Print  "Adding directories to project"
+	Print  ANSI_SCol("Adding directories to project",A_Cyan)
 	For d$=EachIn ly
-		Print "Adding: "+d
+		Print ANSI_SCol("Adding: ",A_Cyan,A_Dark)+ANSI_SCol(d,A_Magenta)
 		jd = JCR_Dir(d) 'pini.c("Projectdir."+platform)+"/"+d)
 		For Local f$=EachIn MapKeys(jd.entries)
 			If Prefixed(f,"JBL/") Or Prefixed(f,"JCR/") Or Prefixed(f,"LIBS/") Print "WARNING! "+f+" makes use of a reserved directory. This may lead To undesirable behavior!"

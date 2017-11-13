@@ -20,18 +20,22 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.07.27
+Version: 17.11.12
 End Rem
 
-MKL_Version "Love Builder - zip.bmx","17.07.27"
+MKL_Version "Love Builder - zip.bmx","17.11.12"
 MKL_Lic     "Love Builder - zip.bmx","GNU General Public License 3"
 
+
+
 Function zip()
+	Local ziplogdir$ = workdir + "/ziplogs/Logs"+StripExt(Replace(Replace(pinifile,"/","."),"\","."))
 	Local pwd$ = CurrentDir()
+	check CreateDir(ziplogdir,2),"Could not create required dir for zip logs"
 	ChangeDir Tempdir
 	CreateDir "Zips"
 	ChangeDir "Assets"
-	Print "Zipping assets"
+	Print ANSI_SCol("Zipping assets",A_Cyan)
 	' This file contains some info, and it prevents bugs too.
 	Local BT:TStream = WriteFile("lovebuilder.info.txt")
 	WriteLine bt,"== Created with Love Builder =="
@@ -48,22 +52,26 @@ Function zip()
 	WriteLine bt,"Builder OS:      Microsoft Windows"
 	?
 	CloseFile bt
+	'If ANSI_Use WriteStdout(Chr(27)+"["+Int(30+A_Yellow)+";40m")
 	?win32
-	system_ AppDir+"\zip ..\Zips\Assets -9 -r *"
+	system_ AppDir+"\zip ..\Zips\Assets -9 -r * > '"+ziplogdir+"\assets.txt'"
 	?Not win32
-	system_ "zip ../Zips/Assets -9 -r *"
+	system_ "zip ../Zips/Assets -9 -r * > '"+ziplogdir+"/assets.txt'"
 	?
+	'Print ANSI_Col("Ok",A_Green,A_black)
 	ChangeDir "../Script"
 	For Local p$=EachIn wplatforms
 		If out(p).process
-			Print "Creating love file for "+out(p).losn
+			Print ANSI_SCol("Creating love file for ",A_Cyan)+ANSI_SCol(out(p).losn,a_magenta)
 			check CopyFile("../zips/assets.zip","../zips/project."+p+".love"),"Could not copy assets into full project file"
 			ChangeDir p
+			'If ANSI_Use WriteStdout(Chr(27)+"["+Int(30+A_Yellow)+";40m")
 			?win32
-			system_ AppDir+"\zip ../../zips/project."+p+".love -9 -r *"
+			system_ AppDir+"\zip ../../zips/project."+p+".love -9 -r * > '"+ziplogdir+"\"+p+".txt'"
 			?Not win32
-			system_ "zip ../../zips/project."+p+".love -9 -r *"
+			system_ "zip ../../zips/project."+p+".love -9 -r * > '"+ziplogdir+"/"+p+".txt'"
 			?
+			'Print ANSI_Col("Ok",A_Green,A_black)
 			ChangeDir ".."
 		EndIf
 	Next

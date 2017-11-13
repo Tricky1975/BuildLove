@@ -20,14 +20,14 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.08.16
+Version: 17.11.12
 End Rem
 Function Need$(ini:TIni,Tag$,Question$,DefaultValue$,isfile=False)
-If ini.c(tag) Return Print(Question+": "+ini.c(tag))
+If ini.c(tag) Return Print (ANSI_SCol(Question+": ",A_Yellow)+ANSI_SCol(ini.c(tag),A_Magenta))
 Repeat
-	ini.d tag,Input(Question+": ")
+	ini.d tag,Input(ANSI_SCol(Question+": ",A_Yellow))
 	If defaultvalue<>"*REQUIRED*" Or ini.c(tag) Exit
-	Print "I require an answer on this one! Sorry!"
+	Print ANSI_SCol("I require an answer on this one! Sorry!",A_Red,A_Blink)
 Forever	
 If Not ini.c(tag) ini.d tag,defaultvalue
 If isfile ini.d tag,Replace(ini.c(tag),"\","/")
