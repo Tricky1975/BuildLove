@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.11.12
+Version: 17.11.19
 End Rem
 Function LookDirs()
 	Local jd:TJCRDir
@@ -58,7 +58,7 @@ Function LookDirs()
 			EndIf	
 			If ListContains(ly,d)
 				Print ANSI_SCol("Will add: ",A_yellow,A_dark)+ANSI_SCol(D,A_magenta)
-				Need pini,"Dir.Author."+d,"Author",d
+				Need pini,"Dir.Author."+d,"Author",StripDir(d)
 				If Not pini.c("Dir.Lic."+d)
 					Print ANSI_SCol("We got the next license codes: ",A_Yellow,A_Bright)
 					For Local lc$=EachIn lic Print ANSI_SCol("* ",A_Blue,A_Blink)+ANSI_SCol(lc,A_magenta) Next

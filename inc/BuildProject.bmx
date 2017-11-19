@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.11.14
+Version: 17.11.19
 End Rem
 Function SetupDefs()
 Local dubbelepunt,List$,dkey$,L:TList
@@ -167,6 +167,7 @@ Function ConvertLua(prj:TJCRDir,file$)
 									If Not ListContains(imports,spline[2]) AddRaw importjcr,libdir+"/"+spline[2]+".lua",imp_file external_requests_done=True								
 								ElseIf FileType(libdir+"/"+spline[2]+".lll/"+spline[2]+".lua")
 									imp_file = "Libs/"+spline[2]+".lll/"+spline[2]+".lua"
+									check imports<>Null,"Imports list is null",1
 									check importjcr<>Null,"ImportJCR resource is null",1
 									If Not ListContains(imports,spline[2]) JCR_AddPatch importjcr,JCR_Dir(libdir+"/"+spline[2]+".lll","Libs/"+spline[2]+".lll/") external_requests_done=True
 								Else
@@ -241,8 +242,10 @@ Function ConvertLua(prj:TJCRDir,file$)
 		EndIf
 	Next
 	' Closure
-	For platform=EachIn wplatforms
-		If out(platform).process 
+	For platform=EachIn wplatforms	      
+	      check out(platform)<>Null , platform + " NULL data",1
+		If out(platform).process
+			WriteStdout ANSI_SCol(" C"+Left(platform,1),A_Yellow) 
 			CloseFile out(platform).bt
 			JCRINDEX.AddText platform,"ENTRY:"+file+"~n"+CIF_FileData(outk.file)+"~n~n"
 		EndIf	
@@ -276,7 +279,7 @@ Function Build(aprj:TJCRDir)
 						Local TJ:TJCRDir = JCR_Dir(Tempdir+"/JCR_TEMP.JCR")
 						CreateDir tempdir+"/Assets/"+f
 						For Local tf$=EachIn MapKeys(tj.entries)
-							Print ANSI_SCol("Extracting: ",A_Cyan)+ANSI_SCol(tf,A_Magenta)+ANSI_SCol(" from ",A_Cyan)+ANSI_SCol(f,A_red)
+							Print ANSI_SCol("= Extracting:  ",A_Cyan)+ANSI_SCol(tf,A_Magenta)+ANSI_SCol(" from ",A_Cyan)+ANSI_SCol(f,A_red)
 							JCR_Extract tj,tf,tempdir+"/Assets/"+f
 							JCRINDEX.addtext "Assets","ENTRY: "+Upper(f)+"/"+tf+"~n"+CIF_FileData(Tempdir+"/Assets/"+f+"/"+tf)+"~n~n"
 						Next
